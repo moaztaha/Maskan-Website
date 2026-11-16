@@ -1,11 +1,12 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { House, Mail, MapPin, Phone } from "lucide-react";
 import { FOOTER_NAVIGATION } from "@/lib/constants/navigation";
+import { Container } from "@/components/layout/Container";
 
 export function Footer() {
   return (
     <footer className="site-footer">
-      <div className="footer-inner">
+      <Container className="footer-inner">
         <div className="footer-about">
           <Link className="footer-brand" href="/">
             <House size={23} aria-hidden="true" />
@@ -34,11 +35,11 @@ export function Footer() {
           <a href="mailto:hello@maskan.eg"><Mail size={16} aria-hidden="true" />hello@maskan.eg</a>
           <p><MapPin size={16} aria-hidden="true" />New Cairo, Cairo, Egypt</p>
         </div>
-      </div>
-      <div className="footer-bottom">
+      </Container>
+      <Container className="footer-bottom">
         <span>© 2026 Maskan. All rights reserved.</span>
         <span>Find your next place with confidence.</span>
-      </div>
+      </Container>
     </footer>
   );
 }

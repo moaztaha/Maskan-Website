@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Cairo, Tajawal } from "next/font/google";
+import { Cairo, Tajawal, Inter } from "next/font/google";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -16,9 +16,15 @@ const tajawal = Tajawal({
   display: "swap",
 });
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" dir="ltr" className={cairo.variable + " " + tajawal.variable}>
+    <html lang="en" dir="ltr" className={cairo.variable + " " + tajawal.variable + " " + inter.variable}>
       <body>{children}</body>
     </html>
   );

@@ -2,6 +2,7 @@ import "server-only";
 
 import type {
   LandingStats,
+  Amenity,
   PaginatedResult,
   Property,
   PropertyFilters,
@@ -48,6 +49,11 @@ const mockProperties: Property[] = mockPropertySeeds.map((seed, index) => {
     createdAt,
   };
 });
+
+// TODO(db): replace the body with a Prisma query. Keep the signature and return type unchanged.
+export async function getAmenities(): Promise<Amenity[]> {
+  return mockAmenities;
+}
 
 // TODO(db): replace the body with a Prisma query. Keep the signature and return type unchanged.
 export async function getProperties(

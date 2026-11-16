@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Property } from "@/types/property";
 import { PropertyCard } from "@/components/property/PropertyCard";
+import { Container } from "@/components/layout/Container";
 
 export function PropertyGrid({
   heading,
@@ -15,7 +16,7 @@ export function PropertyGrid({
   actionLabel?: string;
 }) {
   return (
-    <section className="content-section property-section" aria-labelledby={heading.toLowerCase().replaceAll(" ", "-")}>
+    <Container as="section" className="content-section property-section" aria-labelledby={heading.toLowerCase().replaceAll(" ", "-")}>
       <div className="section-heading">
         <h2 id={heading.toLowerCase().replaceAll(" ", "-")}>{heading}</h2>
         <Link className="text-link" href={actionHref}>
@@ -25,6 +26,6 @@ export function PropertyGrid({
       <div className="property-grid">
         {properties.map((property) => <PropertyCard key={property.id} property={property} />)}
       </div>
-    </section>
+    </Container>
   );
 }

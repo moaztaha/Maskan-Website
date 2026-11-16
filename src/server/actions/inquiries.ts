@@ -13,8 +13,9 @@ export async function submitInquiry(
     name: String(formData.get("name") ?? ""),
     phone: String(formData.get("phone") ?? ""),
     email: String(formData.get("email") ?? ""),
+    subject: String(formData.get("subject") ?? ""),
     message: String(formData.get("message") ?? ""),
-    propertyId: String(formData.get("propertyId") ?? "") || undefined,
+    propertyId: String(formData.get("propertyId") ?? ""),
   });
 
   if (!parsed.success) {

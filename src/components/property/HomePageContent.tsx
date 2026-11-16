@@ -23,6 +23,7 @@ import type {
 import { HOME_PROPERTY_CATEGORY_ORDER } from "@/lib/constants/property";
 import { buildQueryString } from "@/lib/utils/filters";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
+import { Container } from "@/components/layout/Container";
 import { SearchForm } from "@/components/property/SearchForm";
 
 const categoryIcons: Record<PropertyType, typeof House> = {
@@ -71,11 +72,11 @@ export function HomePageContent({
           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2560&q=85"
         />
         <div className="hero-scrim" />
-        <div className="hero-content">
+        <Container className="hero-content">
           <h1 id="home-title">Find Your Ideal Home in Egypt</h1>
           <p>Discover thousands of properties for sale and rent at the best prices</p>
           <SearchForm cities={cities} areas={areas} initialFilters={initialFilters} />
-        </div>
+        </Container>
       </section>
 
       <PropertyGrid
@@ -84,7 +85,7 @@ export function HomePageContent({
         actionHref={"/properties?" + buildQueryString({ sort: "newest" })}
       />
 
-      <section className="content-section city-section" aria-labelledby="city-heading">
+      <Container as="section" className="content-section city-section" aria-labelledby="city-heading">
         <div className="section-heading">
           <h2 id="city-heading">Browse by City</h2>
           <Link className="text-link" href="/properties">
@@ -96,9 +97,9 @@ export function HomePageContent({
             <CityCard key={city.id} city={city} count={count} />
           ))}
         </div>
-      </section>
+      </Container>
 
-      <section className="content-section category-section" aria-labelledby="category-heading">
+      <Container as="section" className="content-section category-section" aria-labelledby="category-heading">
         <div className="section-heading">
           <h2 id="category-heading">Browse by Property Type</h2>
         </div>
@@ -121,7 +122,7 @@ export function HomePageContent({
             );
           })}
         </div>
-      </section>
+      </Container>
 
       <PropertyGrid
         heading="Latest Properties"
@@ -129,7 +130,7 @@ export function HomePageContent({
         actionHref={"/properties?" + buildQueryString({ sort: "newest" })}
       />
 
-      <section className="content-section trust-section" aria-labelledby="trust-heading">
+      <Container as="section" className="content-section trust-section" aria-labelledby="trust-heading">
         <div className="trust-intro">
           <p className="eyebrow">A better way to find home</p>
           <h2 id="trust-heading">Why Maskan?</h2>
@@ -155,9 +156,9 @@ export function HomePageContent({
             <p>See the important details up front and compare homes on a fair basis.</p>
           </article>
         </div>
-      </section>
+      </Container>
 
-      <section className="owner-cta" aria-labelledby="owner-cta-heading">
+      <Container as="section" className="owner-cta" aria-labelledby="owner-cta-heading">
         <div className="owner-cta-copy">
           <span className="owner-cta-icon"><CheckCircle2 size={23} aria-hidden="true" /></span>
           <div>
@@ -168,7 +169,7 @@ export function HomePageContent({
         <Link className="button button-owner" href="/admin/login">
           Add Your Property for Free<ArrowRight size={18} aria-hidden="true" />
         </Link>
-      </section>
+      </Container>
     </div>
   );
 }
