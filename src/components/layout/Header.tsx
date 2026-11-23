@@ -1,7 +1,8 @@
-﻿import Link from "next/link";
+import { Suspense } from "react";
+import Link from "next/link";
 import { CircleUserRound, House, MessageCircle } from "lucide-react";
-import { NAVIGATION } from "@/lib/constants/navigation";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { MainNavigation } from "@/components/layout/MainNavigation";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { Container } from "@/components/layout/Container";
 
@@ -14,18 +15,9 @@ export function Header() {
             <span className="brand-mark"><House aria-hidden="true" size={25} /></span>
             <span>Maskan</span>
           </Link>
-          <nav className="desktop-nav" aria-label="Main navigation">
-            {NAVIGATION.map((item, index) => (
-              <Link
-                key={item.href}
-                className={index === 0 ? "nav-link nav-link-active" : "nav-link"}
-                href={item.href}
-                aria-current={index === 0 ? "page" : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
+          <Suspense fallback={<nav className="desktop-nav" aria-label="Main navigation" />}>
+            <MainNavigation />
+          </Suspense>
         </div>
         <div className="header-actions">
           <Link className="account-link" href="/admin/login" aria-label="Account">
@@ -36,7 +28,7 @@ export function Header() {
             <span>WhatsApp</span>
           </a>
           <ThemeToggle />
-          <MobileNavigation />
+          <Suspense fallback={null}><MobileNavigation /></Suspense>
         </div>
       </Container>
     </header>

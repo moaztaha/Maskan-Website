@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { FormEvent } from "react";
-import { Search } from "lucide-react";
+import { Search, LoaderCircle } from "lucide-react";
+import { useTransition } from "react";
 import {
   HOME_PROPERTY_CATEGORY_ORDER,
   PROPERTY_TYPE_LABELS,
@@ -21,17 +22,18 @@ export function SearchForm({
   initialFilters: PropertyFilters;
 }) {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const params = Object.fromEntries(formData.entries()) as SearchParams;
     const query = buildQueryString(parseFilters(params));
-    router.push(query ? "/properties?" + query : "/properties");
+    startTransition(() => router.push(query ? "/properties?" + query : "/properties"));
   }
 
   return (
-    <form className="search-panel" onSubmit={submitSearch}>
+    <form className="search-panel" onSubmit={submitSearch} aria-busy={isPending}>
       <fieldset className="purpose-tabs">
         <legend className="visually-hidden">Listing purpose</legend>
         {(["SALE", "RENT"] as const).map((purpose) => (
@@ -102,8 +104,8 @@ export function SearchForm({
         </fieldset>
         <div className="search-submit-row">
           <Link className="reset-link" href="/properties">Reset</Link>
-          <button className="button button-search" type="submit">
-            <Search size={19} aria-hidden="true" />Search
+          <button className="button button-search" type="submit" disabled={isPending}>
+            {isPending ? <LoaderCircle className="animate-spin" size={19} aria-hidden="true" /> : <Search size={19} aria-hidden="true" />}{isPending ? "Searching…" : "Search"}
           </button>
         </div>
       </div>

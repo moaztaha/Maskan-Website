@@ -33,6 +33,14 @@ function parseNumber(value: string | undefined): number | undefined {
   return Number.isFinite(number) && number >= 0 ? number : undefined;
 }
 
+function parseInteger(value: string | undefined): number | undefined {
+  const number = parseNumber(value);
+
+  return number !== undefined && Number.isInteger(number)
+    ? number
+    : undefined;
+}
+
 export function parseFilters(searchParams: SearchParams): PropertyFilters {
   const purposeValue = firstValue(searchParams.purpose);
   const typeValue = firstValue(searchParams.type);
@@ -52,8 +60,8 @@ export function parseFilters(searchParams: SearchParams): PropertyFilters {
     areaSlug: firstValue(searchParams.areaSlug),
     minPrice: parseNumber(firstValue(searchParams.minPrice)),
     maxPrice: parseNumber(firstValue(searchParams.maxPrice)),
-    bedrooms: parseNumber(firstValue(searchParams.bedrooms)),
-    bathrooms: parseNumber(firstValue(searchParams.bathrooms)),
+    bedrooms: parseInteger(firstValue(searchParams.bedrooms)),
+    bathrooms: parseInteger(firstValue(searchParams.bathrooms)),
     minArea: parseNumber(firstValue(searchParams.minArea)),
     maxArea: parseNumber(firstValue(searchParams.maxArea)),
     amenities: amenitiesValue
@@ -63,8 +71,8 @@ export function parseFilters(searchParams: SearchParams): PropertyFilters {
       sortValue && sortOptions.includes(sortValue as PropertySort)
         ? (sortValue as PropertySort)
         : undefined,
-    page: parseNumber(firstValue(searchParams.page)),
-    pageSize: parseNumber(firstValue(searchParams.pageSize)),
+    page: parseInteger(firstValue(searchParams.page)),
+    pageSize: parseInteger(firstValue(searchParams.pageSize)),
   };
 }
 

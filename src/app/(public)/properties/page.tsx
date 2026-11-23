@@ -4,6 +4,7 @@ import { PropertyListingContent } from "@/components/property/PropertyListingCon
 import { getAmenities, getProperties } from "@/server/queries/properties";
 import { getAreasByCity, getCities } from "@/server/queries/locations";
 import { parseFilters, type SearchParams } from "@/lib/utils/filters";
+import { PropertyListingSkeleton } from "@/components/ui/LoadingSkeletons";
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<SearchParams> }): Promise<Metadata> {
   const filters = parseFilters(await searchParams);
@@ -25,5 +26,5 @@ async function Listing({ searchParams }: { searchParams: Promise<SearchParams> }
 }
 
 export default function Page({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  return <Suspense fallback={<div className="container listing-loading" aria-busy="true">Loading properties…</div>}><Listing searchParams={searchParams}/></Suspense>;
+  return <Suspense fallback={<PropertyListingSkeleton />}><Listing searchParams={searchParams}/></Suspense>;
 }

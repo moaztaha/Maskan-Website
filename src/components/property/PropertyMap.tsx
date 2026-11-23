@@ -1,12 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 const LeafletContactMap = dynamic(
   () => import("@/components/contact/LeafletContactMap").then((module) => module.LeafletContactMap),
   {
     ssr: false,
-    loading: () => <div className="contact-map-loading" aria-busy="true">Loading map…</div>,
+    loading: () => <div className="contact-map-loading" aria-busy="true" aria-label="Loading map"><Skeleton className="h-full w-full rounded-lg" /></div>,
   },
 );
 

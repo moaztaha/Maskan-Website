@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { PropertyDetails } from "@/components/property/PropertyDetails";
 import { PropertyUnavailable } from "@/components/property/PropertyUnavailable";
 import { getPropertyBySlug, getSimilarProperties } from "@/server/queries/properties";
+import { PropertyDetailsSkeleton } from "@/components/ui/LoadingSkeletons";
 
 export default function PropertyDetailsPage({
   params,
@@ -10,7 +11,7 @@ export default function PropertyDetailsPage({
   params: Promise<{ slug: string }>;
 }) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<PropertyDetailsSkeleton />}>
       <PropertyDetailsContent params={params} />
     </Suspense>
   );

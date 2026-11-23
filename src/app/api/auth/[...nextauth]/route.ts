@@ -1,7 +1,0 @@
-export function GET() {
-  return new Response(null, { status: 501 });
-}
-
-export function POST() {
-  return new Response(null, { status: 501 });
-}

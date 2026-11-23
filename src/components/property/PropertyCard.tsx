@@ -9,7 +9,7 @@ export function PropertyCard({ property }: { property: Property }) {
   const cover = property.images.find((image) => image.isCover) ?? property.images[0];
 
   return (
-    <article className="property-card">
+    <article className="property-card font-[var(--font-inter)]">
       <Link className="property-image-link" href={"/properties/" + property.slug}>
         {cover ? (
           <Image

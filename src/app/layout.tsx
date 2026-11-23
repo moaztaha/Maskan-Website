@@ -1,20 +1,10 @@
 import type { ReactNode } from "react";
-import { Cairo, Tajawal, Inter } from "next/font/google";
+import { Inter, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-cairo",
-  display: "swap",
-});
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
-const tajawal = Tajawal({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-tajawal",
-  display: "swap",
-});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,7 +14,11 @@ const inter = Inter({
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" dir="ltr" className={cairo.variable + " " + tajawal.variable + " " + inter.variable}>
+    <html
+      lang="en"
+      dir="ltr"
+      className={cn(inter.variable, geist.variable)}
+    >
       <body>{children}</body>
     </html>
   );

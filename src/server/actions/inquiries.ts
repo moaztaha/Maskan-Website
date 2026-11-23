@@ -1,11 +1,10 @@
 "use server";
 
 import "server-only";
-
+import { prisma } from "@/server/db/prisma";
 import { inquirySchema } from "@/lib/validations/inquiry.schema";
 import type { InquirySubmissionResult } from "@/types/inquiry";
 
-// TODO(db): replace the body with prisma.inquiry.create plus rate limiting; keep the signature and return type unchanged.
 export async function submitInquiry(
   formData: FormData,
 ): Promise<InquirySubmissionResult> {
@@ -19,9 +18,45 @@ export async function submitInquiry(
   });
 
   if (!parsed.success) {
-    return { ok: false, error: "Please check the inquiry details and try again." };
+    return {
+      ok: false,
+      error: "Please check the inquiry details and try again.",
+    };
   }
 
-  console.log("Mock inquiry submitted:", parsed.data);
-  return { ok: true };
+  try {
+    const property = await prisma.property.findFirst({
+      where: {
+        id: parsed.data.propertyId,
+        status: "PUBLISHED",
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!property) {
+      return {
+        ok: false,
+        error: "This property is no longer available.",
+      };
+    }
+
+    await prisma.inquiry.create({
+      data: {
+        name: parsed.data.name,
+        phone: parsed.data.phone,
+        email: parsed.data.email || null,
+        message: parsed.data.message,
+        propertyId: property.id,
+      },
+    });
+
+    return { ok: true };
+  } catch {
+    return {
+      ok: false,
+      error: "Unable to submit your inquiry. Please try again.",
+    };
+  }
 }

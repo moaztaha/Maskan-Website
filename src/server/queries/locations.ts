@@ -1,47 +1,117 @@
 import "server-only";
+import { prisma } from "@/server/db/prisma";
 
 import type {
   Area,
   City,
   CityListingCount,
 } from "@/types/property";
-import { mockPropertySeeds } from "@/server/mock/properties";
-import { mockAreas, mockCities } from "@/server/mock/locations";
 
-// TODO(db): replace the body with a Prisma query. Keep the signature and return type unchanged.
 export async function getCities(): Promise<City[]> {
-  return mockCities;
+  return prisma.city.findMany({
+    include: {
+      governorate: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
 }
 
-// TODO(db): replace the body with a Prisma query. Keep the signature and return type unchanged.
 export async function getCityBySlug(slug: string): Promise<City | null> {
-  return mockCities.find((city) => city.slug === slug) ?? null;
+  return prisma.city.findUnique({
+    where: {
+      slug,
+    },
+    include: {
+      governorate: true,
+    },
+  });
 }
 
-// TODO(db): replace the body with a Prisma query. Keep the signature and return type unchanged.
 export async function getAreaBySlug(
   citySlug: string,
   areaSlug: string,
 ): Promise<Area | null> {
-  return (
-    mockAreas.find(
-      (area) => area.city.slug === citySlug && area.slug === areaSlug,
-    ) ?? null
-  );
+  const area = await prisma.area.findFirst({
+    where: {
+      slug: areaSlug,
+      city: {
+        slug: citySlug,
+      },
+    },
+    include: {
+      city: {
+        include: {
+          governorate: true,
+        },
+      },
+    },
+  });
+
+  if (!area) return null;
+
+  return {
+    ...area,
+    description: area.description ?? undefined,
+    faqs: area.faqs as Area["faqs"],
+  };
 }
 
-// TODO(db): replace the body with a Prisma query. Keep the signature and return type unchanged.
 export async function getAreasByCity(citySlug: string): Promise<Area[]> {
-  return mockAreas.filter((area) => area.city.slug === citySlug);
+  const areas = await prisma.area.findMany({
+    where: {
+      city: {
+        slug: citySlug,
+      },
+    },
+    include: {
+      city: {
+        include: {
+          governorate: true,
+        },
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return areas.map((area) => ({
+    ...area,
+    description: area.description ?? undefined,
+    faqs: area.faqs as Area["faqs"],
+  }));
 }
 
-// TODO(db): replace the body with a Prisma query. Keep the signature and return type unchanged.
 export async function getCityListingCounts(): Promise<CityListingCount[]> {
-  return mockCities.map((city) => ({
+  const [cities, propertyCounts] = await Promise.all([
+    prisma.city.findMany({
+      include: {
+        governorate: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    }),
+
+    prisma.property.groupBy({
+      by: ["cityId"],
+      where: {
+        status: "PUBLISHED",
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+  ]);
+
+  const countByCityId = new Map(
+    propertyCounts.map((item) => [item.cityId, item._count._all]),
+  );
+
+  return cities.map((city) => ({
     city,
-    count: mockPropertySeeds.filter(
-      (property) =>
-        property.status === "PUBLISHED" && property.cityId === city.id,
-    ).length,
+    count: countByCityId.get(city.id) ?? 0,
   }));
 }

@@ -47,7 +47,7 @@ export interface Amenity {
   slug: string;
   name: string;
   nameAr?: string;
-  icon?: string;
+  icon?: string | null;
 }
 
 export interface PropertyImage {
