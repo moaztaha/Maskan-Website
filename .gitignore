@@ -41,3 +41,10 @@ Thumbs.db
 *.db
 *.sqlite
 *.sqlite3
+
+
+
+.agents/
+.windsurf/
+skills-lock.json
+test-image.jpg

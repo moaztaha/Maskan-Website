@@ -22,15 +22,36 @@ export function Pagination({
   return (
     <nav className="pagination" aria-label="Property pages">
       {page > 1 ? (
-        <Link href={"/properties?" + previousQuery} rel="prev">Previous</Link>
+        <Link className="pagination-control" href={`/properties?${previousQuery}`} rel="prev">
+          Previous
+        </Link>
       ) : (
-        <span aria-disabled="true">Previous</span>
+        <span className="pagination-control pagination-disabled" aria-disabled="true">
+          Previous
+        </span>
       )}
-      <span aria-current="page">Page {page} of {pageCount}</span>
+      <div className="pagination-pages" aria-label="Page numbers">
+        {Array.from({ length: pageCount }, (_, index) => index + 1).map((pageNumber) => {
+          const query = buildQueryString({ ...filters, page: pageNumber, pageSize });
+          return pageNumber === page ? (
+            <span key={pageNumber} className="pagination-page pagination-current" aria-current="page" aria-label={`Page ${pageNumber}`}>
+              {pageNumber}
+            </span>
+          ) : (
+            <Link key={pageNumber} className="pagination-page" href={`/properties?${query}`} aria-label={`Go to page ${pageNumber}`}>
+              {pageNumber}
+            </Link>
+          );
+        })}
+      </div>
       {page < pageCount ? (
-        <Link href={"/properties?" + nextQuery} rel="next">Next</Link>
+        <Link className="pagination-control" href={`/properties?${nextQuery}`} rel="next">
+          Next
+        </Link>
       ) : (
-        <span aria-disabled="true">Next</span>
+        <span className="pagination-control pagination-disabled" aria-disabled="true">
+          Next
+        </span>
       )}
     </nav>
   );

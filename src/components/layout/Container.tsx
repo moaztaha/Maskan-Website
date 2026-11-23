@@ -6,6 +6,7 @@ type ContainerProps = {
   as?: "div" | "section" | "header" | "footer" | "nav";
   "aria-label"?: string;
   "aria-labelledby"?: string;
+  "aria-busy"?: boolean | "true" | "false";
 };
 
 export function Container({ children, className = "", as: Element = "div", ...attributes }: ContainerProps) {

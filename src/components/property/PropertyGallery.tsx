@@ -15,7 +15,13 @@ export function PropertyGallery({
   unavailable?: boolean;
 }) {
   const [active, setActive] = useState<number | null>(null);
-  const photos = [...images].sort((a, b) => a.position - b.position);
+  const photos = [...images].sort((a, b) => {
+    if (a.isCover !== b.isCover) {
+      return a.isCover ? -1 : 1;
+    }
+
+    return a.position - b.position;
+  });
   const sidePhotos = photos.slice(1, 3);
 
   useEffect(() => {

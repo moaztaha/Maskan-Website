@@ -50,12 +50,12 @@ export function PropertyInquiryForm({ propertyId, purpose }: { propertyId: strin
         setSuccess(true);
         form.reset();
         const message = form.elements.namedItem("message");
-        if (message instanceof HTMLTextAreaElement) message.value = "أنا مهتم بهذا العقار";
+        if (message instanceof HTMLTextAreaElement) message.value = "I'm interested in this property";
       } else {
         setFormError(result.error);
       }
     } catch {
-      setFormError("تعذر إرسال استفسارك. حاول مرة أخرى.");
+      setFormError("Unable to send your inquiry. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -66,21 +66,21 @@ export function PropertyInquiryForm({ propertyId, purpose }: { propertyId: strin
       <input type="hidden" name="email" value="" readOnly />
       <input type="hidden" name="subject" value={purpose === "RENT" ? "rent" : "buy"} readOnly />
       <input type="hidden" name="propertyId" value={propertyId} readOnly />
-      <label>الاسم
-        <input name="name" autoComplete="name" placeholder="اسمك بالكامل" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "property-name-error" : undefined} />
+      <label>Name
+        <input name="name" autoComplete="name" placeholder="Your full name" aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "property-name-error" : undefined} />
         {errors.name && <small id="property-name-error">{errors.name}</small>}
       </label>
-      <label>رقم الهاتف
+      <label>Phone Number
         <input name="phone" type="tel" autoComplete="tel" placeholder="+20 1X XXX XXXX" aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "property-phone-error" : undefined} />
         {errors.phone && <small id="property-phone-error">{errors.phone}</small>}
       </label>
-      <label>رسالتك
-        <textarea name="message" rows={3} defaultValue="أنا مهتم بهذا العقار" aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "property-message-error" : undefined} />
+      <label>Your Message
+        <textarea name="message" rows={3} defaultValue="I'm interested in this property" aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "property-message-error" : undefined} />
         {errors.message && <small id="property-message-error">{errors.message}</small>}
       </label>
       {formError && <p className="property-inquiry-error" role="alert">{formError}</p>}
-      {success && <p className="property-inquiry-success" role="status"><CheckCircle2 size={18} /> تم إرسال استفسارك بنجاح.</p>}
-      <button type="submit" disabled={loading}>{loading ? <LoaderCircle className="property-spinner" size={18} /> : <Send size={18} />} {loading ? "جارٍ الإرسال…" : "أرسل استفسارك"}</button>
+      {success && <p className="property-inquiry-success" role="status"><CheckCircle2 size={18} /> Your inquiry has been sent successfully.</p>}
+      <button type="submit" disabled={loading}>{loading ? <LoaderCircle className="property-spinner" size={18} /> : <Send size={18} />} {loading ? "Sending…" : "Send Inquiry"}</button>
     </form>
   );
 }

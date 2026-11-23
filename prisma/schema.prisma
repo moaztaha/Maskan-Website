@@ -5,3 +5,150 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+
+
+enum PropertyPurpose {
+  SALE
+  RENT
+}
+
+enum PropertyType {
+  APARTMENT
+  VILLA
+  DUPLEX
+  LAND
+  SHOP
+  OFFICE
+  CHALET
+}
+
+enum PropertyStatus {
+  DRAFT
+  PUBLISHED
+  SOLD
+}
+
+enum PropertyFinishing {
+  CORE_AND_SHELL
+  SEMI_FINISHED
+  FINISHED
+  SUPER_LUX
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  COMPLETED
+}
+
+
+model Governorate {
+  id   String @id @default(cuid())
+  name String @unique
+  slug   String @unique
+  cities City[]
+}
+
+model City {
+  id             String      @id @default(cuid())
+  name           String
+  governorateId  String
+  governorate    Governorate @relation(fields: [governorateId], references: [id])
+  areas          Area[]
+  slug   String @unique
+  @@unique([name, governorateId])
+}
+
+model Area {
+  id          String @id @default(cuid())
+  name        String
+  cityId      String
+  slug        String @unique
+  description String?
+  faqs        Json?  @db.JsonB
+  city        City       @relation(fields: [cityId], references: [id])
+  properties  Property[]
+  @@unique([name, cityId])
+  @@unique([id, cityId])
+}
+
+
+model Admin {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+
+model Property {
+  id             String           @id @default(cuid())
+  slug           String           @unique
+  areaId String
+  cityId String
+  area Area @relation(fields: [areaId, cityId], references: [id, cityId])
+  images PropertyImage[]
+  amenities Amenity[]
+  inquiries Inquiry[]
+  title          String
+  description    String           @db.Text
+  purpose        PropertyPurpose
+  type           PropertyType
+  status         PropertyStatus   @default(DRAFT)
+  isFeatured     Boolean          @default(false)
+  price          Decimal          @db.Decimal(14, 2)
+  areaSqm        Float
+  bedrooms       Int?
+  bathrooms      Int?
+  floor          Int?
+  finishing      PropertyFinishing?
+  yearBuilt      Int?
+  addressDetails String?
+  latitude       Float?
+  longitude      Float?
+  publishedAt    DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  url        String
+  alt        String
+  width      Int
+  height     Int
+  position   Int      @default(0)
+  isCover    Boolean  @default(false)
+  publicId   String   @unique
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  @@index([propertyId])
+}
+
+model Amenity {
+  id         String     @id @default(cuid())
+  slug       String     @unique
+  name       String
+  icon       String?
+  properties Property[]
+}
+
+model Inquiry {
+  id          String        @id @default(cuid())
+  name        String
+  phone       String
+  email       String?
+  message     String        @db.Text
+  status      InquiryStatus @default(NEW)
+  propertyId  String
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  @@index([propertyId])
+  @@index([status])
+}

@@ -11,6 +11,7 @@ import {
   getCityListingCounts,
 } from "@/server/queries/locations";
 import { parseFilters, type SearchParams } from "@/lib/utils/filters";
+import { HomePageSkeleton } from "@/components/ui/LoadingSkeletons";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,7 +27,7 @@ type PageProps = {
 
 export default function Page({ searchParams }: PageProps) {
   return (
-    <Suspense fallback={<div className="home-loading" aria-busy="true" />}>
+    <Suspense fallback={<HomePageSkeleton />}>
       <HomePageLoader searchParams={searchParams} />
     </Suspense>
   );

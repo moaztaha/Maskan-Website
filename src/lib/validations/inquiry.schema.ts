@@ -8,7 +8,7 @@ export const inquirySchema = z.object({
     error: "Choose a subject.",
   }),
   message: z.string().trim().min(10, "Add a little more detail to your message."),
-  propertyId: z.string().trim().optional(),
+  propertyId: z.string().trim().min(1, "Property is required."),
 });
 
 export type InquiryInput = z.infer<typeof inquirySchema>;
