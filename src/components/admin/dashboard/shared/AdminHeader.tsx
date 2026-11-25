@@ -1,10 +1,8 @@
 "use client";
 
-import { useTransition } from "react";
-import { LoaderCircle, LogOut, ShieldCheck, User } from "lucide-react";
+import { ShieldCheck, User } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { Container } from "@/components/layout/Container";
-import { logoutAdmin } from "@/server/actions/auth";
 
 interface AdminHeaderProps {
   admin?: {
@@ -14,14 +12,6 @@ interface AdminHeaderProps {
 }
 
 export function AdminHeader({ admin }: AdminHeaderProps) {
-  const [isLoggingOut, startLogout] = useTransition();
-
-  function handleLogout() {
-    startLogout(async () => {
-      await logoutAdmin();
-    });
-  }
-
   return (
     <header className="sticky top-0 z-30 h-16 w-full border-b border-border bg-bg-surface shadow-xs">
       <Container className="admin-dashboard-container flex h-full items-center justify-between">
@@ -55,21 +45,6 @@ export function AdminHeader({ admin }: AdminHeaderProps) {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            aria-label={isLoggingOut ? "Logging out" : "Log out"}
-            aria-busy={isLoggingOut}
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-border bg-bg-subtle px-2.5 text-xs font-semibold text-text-secondary transition-colors hover:bg-primary-soft hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-60 sm:px-3"
-          >
-            {isLoggingOut ? (
-              <LoaderCircle size={16} className="animate-spin" aria-hidden="true" />
-            ) : (
-              <LogOut size={16} aria-hidden="true" />
-            )}
-            <span className="hidden sm:inline">{isLoggingOut ? "Logging out..." : "Log out"}</span>
-          </button>
         </div>
       </Container>
     </header>

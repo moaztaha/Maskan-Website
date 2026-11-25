@@ -26,24 +26,24 @@ export function DeleteInquiryDialog({
             }}
         >
             <Dialog.Portal>
-                <Dialog.Overlay className="fixed inset-0 z-[60] bg-slate-900/40 backdrop-blur-[2px] transition-opacity" />
+                <Dialog.Overlay className="fixed inset-0 z-[60] bg-slate-950/50 backdrop-blur-[2px] transition-opacity" />
 
-                <Dialog.Content className="fixed left-1/2 top-1/2 z-[60] w-[calc(100%-32px)] max-w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-200 bg-white px-6 py-7 text-center shadow-xl focus:outline-none">
+                <Dialog.Content className="fixed left-1/2 top-1/2 z-[60] w-[calc(100%-32px)] max-w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-border bg-bg-surface px-6 py-7 text-center text-text-primary shadow-xl focus:outline-none">
 
                     {/* Centered Icon */}
-                    <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-600">
+                    <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-danger/10 text-danger">
                         <AlertTriangle size={22} strokeWidth={2.2} />
                     </div>
 
                     {/* Centered Title */}
-                    <Dialog.Title className="text-base font-semibold tracking-normal text-slate-900">
+                    <Dialog.Title className="text-base font-semibold tracking-normal text-text-primary">
                         Delete Inquiry?
                     </Dialog.Title>
 
                     {/* Centered Description with better spacing */}
-                    <Dialog.Description className="mt-3 text-xs leading-6 text-slate-500">
+                    <Dialog.Description className="mt-3 text-xs leading-6 text-text-secondary">
                         Are you sure you want to permanently delete the inquiry from{" "}
-                        <span className="font-semibold text-slate-800">
+                        <span className="font-semibold text-text-primary">
                             {inquiryName}
                         </span>
                         ? This action cannot be undone.
@@ -53,7 +53,7 @@ export function DeleteInquiryDialog({
                     <div className="mt-7 flex items-center justify-center gap-3">
                         <Dialog.Close
                             disabled={isDeleting}
-                            className="rounded-lg border border-slate-200 bg-white px-4 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 disabled:opacity-50"
+                            className="rounded-lg border border-border bg-bg-surface px-4 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:bg-bg-subtle hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50"
                         >
                             Cancel
                         </Dialog.Close>
@@ -62,10 +62,10 @@ export function DeleteInquiryDialog({
                             type="button"
                             onClick={onConfirm}
                             disabled={isDeleting}
-                            className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-1.5 text-xs font-medium !text-white transition-colors hover:bg-red-700 active:scale-[0.98] disabled:opacity-60"
+                            className="inline-flex items-center justify-center gap-2 rounded-lg bg-danger px-4 py-1.5 text-xs font-medium text-on-primary transition-colors hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-danger active:scale-[0.98] disabled:opacity-60 dark:bg-danger/15 dark:text-danger"
                         >
-                            <Trash2 size={14} className="shrink-0 !text-white" />
-                            <span className="!text-white">
+                            <Trash2 size={14} className="shrink-0 text-on-primary dark:text-danger" />
+                            <span className="text-on-primary dark:text-danger">
                                 {isDeleting ? "Deleting..." : "Delete"}
                             </span>
                         </button>

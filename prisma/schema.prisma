@@ -101,7 +101,7 @@ model Property {
   status         PropertyStatus   @default(DRAFT)
   isFeatured     Boolean          @default(false)
   price          Decimal          @db.Decimal(14, 2)
-  areaSqm        Float
+  areaSqm        Float?
   bedrooms       Int?
   bathrooms      Int?
   floor          Int?

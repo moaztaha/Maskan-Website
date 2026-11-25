@@ -48,6 +48,27 @@ export async function getAmenities(): Promise<Amenity[]> {
   });
 }
 
+export async function getAdminProperties() {
+  return prisma.property.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      area: { include: { city: { include: { governorate: true } } } },
+      images: { orderBy: { position: "asc" } },
+    },
+  });
+}
+
+export async function getAdminPropertyById(id: string) {
+  return prisma.property.findUnique({
+    where: { id },
+    include: {
+      area: { include: { city: { include: { governorate: true } } } },
+      images: { orderBy: { position: "asc" } },
+      amenities: true,
+    },
+  });
+}
+
 export async function getProperties(
   filters: PropertyFilters = {},
 ): Promise<PaginatedResult<Property>> {
@@ -170,6 +191,7 @@ function mapProperty(property: PropertyWithRelations): Property {
   return {
     ...property,
     price: Number(property.price),
+    areaSqm: property.areaSqm ?? undefined,
     bedrooms: property.bedrooms ?? undefined,
     bathrooms: property.bathrooms ?? undefined,
     floor: property.floor ?? undefined,

@@ -69,7 +69,7 @@ export interface Property {
   status: PropertyStatus;
   isFeatured: boolean;
   price: number;
-  areaSqm: number;
+  areaSqm?: number | null;
   bedrooms?: number;
   bathrooms?: number;
   floor?: number;

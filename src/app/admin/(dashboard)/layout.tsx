@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { redirect } from "next/navigation";
 import { getCurrentAdmin } from "@/server/auth/get-current-admin";
 import { AdminDashboardShellSkeleton } from "@/components/ui/LoadingSkeletons";
+import { AdminSidebar } from "@/components/admin/dashboard/shared/AdminSidebar";
 
 export default function DashboardLayout({
   children,
@@ -30,9 +31,12 @@ async function AuthenticatedDashboard({ children }: { children: ReactNode }) {
     <AdminNavProvider>
       <div className="min-h-screen w-full">
         <AdminHeader admin={admin} />
-        <main className="min-h-[calc(100vh-4rem)] bg-bg-page">
-          <Container className="admin-dashboard-container py-6 sm:py-8">{children}</Container>
-        </main>
+        <div className="flex min-h-[calc(100vh-4rem)] flex-col bg-bg-page md:flex-row">
+          <AdminSidebar />
+          <main className="min-w-0 flex-1">
+            <Container className="admin-dashboard-container py-6 sm:py-8">{children}</Container>
+          </main>
+        </div>
       </div>
     </AdminNavProvider>
   );
